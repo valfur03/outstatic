@@ -154,6 +154,23 @@ const DocumentSettings = ({
             className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:ring-blue-500"
           />
         </Accordion>
+        <Accordion title="Labels">
+          <div className="flex">
+            <Input
+              id="label_name"
+              inputSize="small"
+              className="w-4/5"
+              placeholder="Name"
+              type="text"
+            />
+            <Input
+              id="label_value"
+              inputSize="small"
+              placeholder="Value"
+              type="text"
+            />
+          </div>
+        </Accordion>
 
         <Accordion title="Cover Image">
           <DocumentSettingsImageSelection
