@@ -2,6 +2,7 @@ import { useFormContext, RegisterOptions } from 'react-hook-form'
 
 export type InputProps = {
   label?: string
+  name?: string,
   id: string
   placeholder?: string
   helperText?: string
@@ -30,6 +31,7 @@ export default function Input({
   label,
   placeholder = '',
   helperText,
+  name,
   id,
   type = 'text',
   readOnly = false,
@@ -57,7 +59,7 @@ export default function Input({
           {...rest}
           className={`${sizes[inputSize].input} ${className}`}
           type={type}
-          name={id}
+          name={name}
           id={id}
           readOnly={readOnly}
           placeholder={placeholder}

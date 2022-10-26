@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useContext } from 'react'
+import { lazy, useContext, useState } from 'react'
 import { RegisterOptions, useFormContext } from 'react-hook-form'
 import { convert } from 'url-slug'
 import { DocumentContext } from '../../context'
@@ -9,6 +9,7 @@ import DeleteDocumentButton from '../DeleteDocumentButton'
 import Input from '../Input'
 import TextArea from '../TextArea'
 import DocumentSettingsImageSelection from '../DocumentSettingsImageSelection'
+import { v4 as uuidv4 } from 'uuid';
 
 type DocumentSettingsProps = {
   saveFunc: () => void
@@ -27,6 +28,26 @@ const DocumentSettings = ({
   const router = useRouter()
   const { document, editDocument, hasChanges, collection } =
     useContext(DocumentContext)
+  const [labels, setLabels] = useState([{ name: '', value: '' }]);
+
+  let handleLabelChange = (i: number, e: React.ChangeEvent<HTMLInputElement>) => {
+	if (e.target.name == 'name' || e.target.name == 'value') {
+		let newLabels = [...labels];
+		newLabels[i][e.target.name] = e.target.value;
+		setLabels(newLabels);
+		console.log(newLabels);
+	}
+//    if (labels.every((label) => label.name || label.value)) {
+//    }
+  };
+
+  let addLabelField = () => {
+    setLabels([...labels, { name: '', value: '' }])
+  }
+
+//  let handleLabelFocus = () => {
+//    setLabels(labels.filter((label, i) => (label.name || label.value) || i + 1 == labels.length));
+//  };
 
   return (
     <aside className="relative w-full border-b border-gray-300 bg-white md:w-64 md:flex-none md:flex-col md:flex-wrap md:items-start md:justify-start md:border-b-0 md:border-l md:py-6 max-h-[calc(100vh-53px)] scrollbar-hide overflow-scroll">
@@ -155,21 +176,35 @@ const DocumentSettings = ({
           />
         </Accordion>
         <Accordion title="Labels">
-          <div className="flex">
-            <Input
-              id="label_name"
-              inputSize="small"
-              className="w-4/5"
-              placeholder="Name"
-              type="text"
-            />
-            <Input
-              id="label_value"
-              inputSize="small"
-              placeholder="Value"
-              type="text"
-            />
-          </div>
+			<>{labels.map((label, i) => (
+				<div className="flex" key={i}>
+					<Input
+						name="name"
+						id={`name_${i}`}
+						inputSize="small"
+						className="w-4/5"
+						placeholder="Name"
+						type="text"
+						value={label.name}
+						onChange={e => handleLabelChange(i, e)}
+			//			onFocus={handleLabelFocus}
+					/>
+					<Input
+						name="value"
+						id={`value_${i}`}
+						inputSize="small"
+						placeholder="Value"
+						type="text"
+						value={label.value}
+						onChange={e => handleLabelChange(i, e)}
+		//				onFocus={handleLabelFocus}
+					/>
+				</div>
+			))}
+			<button
+				onClick={addLabelField}
+			>Merci</button>
+			</>
         </Accordion>
 
         <Accordion title="Cover Image">
